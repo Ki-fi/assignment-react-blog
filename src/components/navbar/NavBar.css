@@ -8,7 +8,7 @@
 }
 
 .navbar img {
-    width: 150px;
+    height: 42px;
 }
 
 .navbar li{
@@ -18,10 +18,15 @@
 }
 
 .active-link {
-    color: white;
-    border-bottom: 1px solid white;
+    color: var(--color-primary);
+    border-bottom: 1px solid var(--color-primary);
 }
 
 .default-link {
-    color: var(--color-secondary);
+    color: white;
+    border-bottom: 1px solid transparent;
+}
+
+a {
+    text-decoration: none;
 }
