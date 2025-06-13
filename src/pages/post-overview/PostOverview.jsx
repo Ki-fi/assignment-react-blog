@@ -13,6 +13,7 @@ function PostOverview() {
            {posts.map(post => (
                <Card
                    key={post.id}
+                   id={post.id}
                    title={post.title}
                    author={post.author}
                    comments={post.comments}
