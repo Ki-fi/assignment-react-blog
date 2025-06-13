@@ -1,6 +1,7 @@
 import {Link, useParams} from "react-router-dom";
 import posts from '../../constants/data.json';
 import './Post.css';
+import formatDate from "../../helpers/formatDate.js";
 
 function Post() {
 
@@ -13,7 +14,7 @@ function Post() {
             <div className="post">
                 <h1>{post.title}</h1>
                 <h4 >{post.subtitle}</h4>
-                <p>Geschreven door {post.author} op {post.created}</p>
+                <p>Geschreven door {post.author} op {formatDate(post.created)}</p>
                 <p>{post.readTime} minuten lezen</p>
                 <p>{post.content}</p>
                 <div className="post-statistics">
