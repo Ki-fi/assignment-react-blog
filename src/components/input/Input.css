@@ -1,0 +1,13 @@
+
+.input {
+    display: flex;
+    flex-direction: column;
+    color: rgb(44,47,57);
+}
+
+.input input {
+    height: 32px;
+    padding: 4px 8px;
+    border: 1px solid lightgrey;
+    border-radius: 4px;
+}
