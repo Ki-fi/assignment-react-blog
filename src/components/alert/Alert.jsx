@@ -1,4 +1,4 @@
-import './Alert.css';;
+import './Alert.css';
 
 function Alert({message}) {
     return (

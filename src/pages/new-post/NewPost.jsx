@@ -4,6 +4,7 @@ import './NewPost.css';
 import enforceRequiredField from "../../helpers/enforceRequiredField.js";
 import {useNavigate} from "react-router-dom";
 import Alert from "../../components/alert/Alert.jsx";
+import calculateReadTime from "../../helpers/calculateReadTime.js";
 
 function NewPost() {
 
@@ -43,7 +44,11 @@ function NewPost() {
                 Ondertitel: ${formState.subtitle}
                 Content: ${formState.content}
                 Auteur: ${formState.author}
-                Datum: ${currentDate}`)
+                Datum: ${currentDate}
+                Leestijd: ${Math.ceil(calculateReadTime(formState.content))} minuten
+                Comments: 0
+                Shares: 0
+                `)
         navigate("/posts");
     }
 
