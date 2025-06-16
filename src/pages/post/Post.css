@@ -6,6 +6,7 @@
 .post {
     display: flex;
     flex-direction: column;
+    height: 100vh;
     margin: 64px;
     color: rgb(44,47,57);
 }
