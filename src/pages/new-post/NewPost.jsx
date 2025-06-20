@@ -5,11 +5,14 @@ import enforceRequiredField from "../../helpers/enforceRequiredField.js";
 import {useNavigate} from "react-router-dom";
 import Alert from "../../components/alert/Alert.jsx";
 import calculateReadTime from "../../helpers/calculateReadTime.js";
+import axios from "axios";
 
 function NewPost() {
 
     const navigate = useNavigate();
     const [alertMessage, setAlertMessage] = useState('');
+    const [error, setError] = useState();
+    const [loading, toggleLoading] = useState(false);
     const [formState, setFormState] = useState({
         title: '',
         subtitle: '',
@@ -27,10 +30,24 @@ function NewPost() {
         })
     }
 
-    function handleSubmit(event) {
+    async function handleSubmit(event) {
         event.preventDefault();
         const isValid = enforceRequiredField(formState);
         const currentDate = new Date().toISOString()
+        toggleLoading(true);
+
+        try {
+            const request = await axios.post(
+                'https://novi-backend-api-wgsgz.ondigitalocean.app/api/blogposts',
+                {formState},
+                { headers: {'novi-education-project-id': 'ca0dd25e-4edf-4175-bac3-f904622534a9'}})
+                console.log(request);
+        } catch (error) {
+            console.error(error);
+            setError('Er is iets misgegaan met het versturen van de post...');
+        } finally {
+            toggleLoading(false);
+        }
 
         if (isValid) {
             setAlertMessage(isValid)

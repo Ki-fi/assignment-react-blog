@@ -1,5 +1,4 @@
 import Card from "../../components/card/Card.jsx";
-// import posts from '../../constants/data.json';
 import './PostOverview.css';
 import {useEffect, useState} from "react";
 import axios from "axios";
@@ -24,13 +23,16 @@ function PostOverview() {
                 setPosts(response.data);
             } catch (error) {
                 console.error(error);
-                setError('Geen resultaten...');
+                setError('Er is iets misgegaan met het ophalen van de resultaten...');
             } finally {
                 toggleLoading(false);
             }
         } fetchPosts();
 
     }, []);
+
+    if (loading || !posts) return <p>Loading...</p>;
+    if (error) return <p>{error}</p>;
 
    return (
        <>
