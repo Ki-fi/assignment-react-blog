@@ -1,8 +1,36 @@
 import Card from "../../components/card/Card.jsx";
-import posts from '../../constants/data.json';
+// import posts from '../../constants/data.json';
 import './PostOverview.css';
+import {useEffect, useState} from "react";
+import axios from "axios";
 
 function PostOverview() {
+
+    const [error, setError] = useState();
+    const [loading, toggleLoading] = useState(false);
+    const [posts, setPosts] = useState([]);
+
+    useEffect(() => {
+
+        async function fetchPosts() {
+            setError('');
+
+            try {
+                toggleLoading(true);
+                const response = await axios.get(
+                    'https://novi-backend-api-wgsgz.ondigitalocean.app/api/blogposts',
+                    { headers: {'novi-education-project-id': 'ca0dd25e-4edf-4175-bac3-f904622534a9'}});
+                console.log(response.data);
+                setPosts(response.data);
+            } catch (error) {
+                console.error(error);
+                setError('Geen resultaten...');
+            } finally {
+                toggleLoading(false);
+            }
+        } fetchPosts();
+
+    }, []);
 
    return (
        <>
