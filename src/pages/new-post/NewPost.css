@@ -5,14 +5,14 @@ form {
     gap: 12px;
 }
 
-form button {
+button {
     border: none;
     background: var(--color-primary);
     padding: 12px;
     font-weight: bold;
 }
 
-form button:hover {
+button:hover {
     background: white;
     cursor: pointer;
 }

@@ -13,6 +13,7 @@ function NewPost() {
     const [alertMessage, setAlertMessage] = useState('');
     const [error, setError] = useState();
     const [loading, toggleLoading] = useState(false);
+    const [newPostId, setNewPostId] = useState(null);
     const [formState, setFormState] = useState({
         title: '',
         subtitle: '',
@@ -33,21 +34,6 @@ function NewPost() {
     async function handleSubmit(event) {
         event.preventDefault();
         const isValid = enforceRequiredField(formState);
-        const currentDate = new Date().toISOString()
-        toggleLoading(true);
-
-        try {
-            const request = await axios.post(
-                'https://novi-backend-api-wgsgz.ondigitalocean.app/api/blogposts',
-                {formState},
-                { headers: {'novi-education-project-id': 'ca0dd25e-4edf-4175-bac3-f904622534a9'}})
-                console.log(request);
-        } catch (error) {
-            console.error(error);
-            setError('Er is iets misgegaan met het versturen van de post...');
-        } finally {
-            toggleLoading(false);
-        }
 
         if (isValid) {
             setAlertMessage(isValid)
@@ -56,24 +42,51 @@ function NewPost() {
 
         setAlertMessage("");
 
+        const currentDate = new Date().toISOString();
+        const readTime = Math.ceil(calculateReadTime(formState.content));
+        toggleLoading(true);
+
+        try {
+            const response = await axios.post(
+                'https://novi-backend-api-wgsgz.ondigitalocean.app/api/blogposts',
+                {
+                    "title": formState.title,
+                    "subtitle": formState.subtitle,
+                    "content": formState.content,
+                    "created": currentDate,
+                    "author": formState.author,
+                    "readTime": readTime,
+                    "comments": 0,
+                    "shares": 0
+                },
+                {headers: {'novi-education-project-id': 'ca0dd25e-4edf-4175-bac3-f904622534a9'}})
+            console.log(response);
+            setNewPostId(response.data.id);
+        } catch (error) {
+            console.error(error);
+            setError('Er is iets misgegaan met het versturen van de post...');
+        } finally {
+            toggleLoading(false);
+        }
+
         console.log(`
                 Titel: ${formState.title}
                 Ondertitel: ${formState.subtitle}
                 Content: ${formState.content}
                 Auteur: ${formState.author}
                 Datum: ${currentDate}
-                Leestijd: ${Math.ceil(calculateReadTime(formState.content))} minuten
+                Leestijd: ${readTime} minuten
                 Comments: 0
                 Shares: 0
                 `)
-        navigate("/posts");
     }
 
     return (
         <>
+            {!newPostId && (
             <form onSubmit={handleSubmit}>
                 <h1>Post toevoegen</h1>
-                {alertMessage && <Alert message={alertMessage} />}
+                {alertMessage && <Alert message={alertMessage}/>}
                 <Input
                     labelName={"Titel"}
                     name={"title"}
@@ -105,9 +118,22 @@ function NewPost() {
                     Toevoegen
                 </button>
             </form>
+            )}
+            {newPostId && (
+                    <>
+                        <p>Blogpost toegevoegd!</p>
+                        <button
+                            type="button"
+                            onClick={() => navigate(`/posts/${newPostId}`)}
+                        >Post bekijken
+                        </button>
+                    </>
+            )}
         </>
-    )
+)
 }
+
+
 
 export default NewPost;
 
