@@ -1,0 +1,141 @@
+import Input from "../../components/input/Input.jsx";
+import {useState} from "react";
+import './NewPost.css';
+import enforceRequiredField from "../../helpers/enforceRequiredField.js";
+import {useNavigate} from "react-router-dom";
+import Alert from "../../components/alert/Alert.jsx";
+import calculateReadTime from "../../helpers/calculateReadTime.js";
+import axios from "axios";
+
+function NewPost() {
+
+    const navigate = useNavigate();
+    const [alertMessage, setAlertMessage] = useState('');
+    const [error, setError] = useState();
+    const [loading, toggleLoading] = useState(false);
+    const [newPostId, setNewPostId] = useState(null);
+    const [formState, setFormState] = useState({
+        title: '',
+        subtitle: '',
+        author: '',
+        content: '',
+    })
+
+    function handleChange(e) {
+        const changedField = e.target.name;
+        const newValue = e.target.value;
+
+        setFormState({
+            ...formState,
+            [changedField]: newValue,
+        })
+    }
+
+    async function handleSubmit(event) {
+        event.preventDefault();
+        const isValid = enforceRequiredField(formState);
+
+        if (isValid) {
+            setAlertMessage(isValid)
+            return;
+        }
+
+        setAlertMessage("");
+
+        const currentDate = new Date().toISOString();
+        const readTime = Math.ceil(calculateReadTime(formState.content));
+        toggleLoading(true);
+
+        try {
+            const response = await axios.post(
+                'https://novi-backend-api-wgsgz.ondigitalocean.app/api/blogposts',
+                {
+                    "title": formState.title,
+                    "subtitle": formState.subtitle,
+                    "content": formState.content,
+                    "created": currentDate,
+                    "author": formState.author,
+                    "readTime": readTime,
+                    "comments": 0,
+                    "shares": 0
+                },
+                {headers: {'novi-education-project-id': 'ca0dd25e-4edf-4175-bac3-f904622534a9'}})
+            console.log(response);
+            setNewPostId(response.data.id);
+        } catch (error) {
+            console.error(error);
+            setError('Er is iets misgegaan met het versturen van de post...');
+        } finally {
+            toggleLoading(false);
+        }
+
+        console.log(`
+                Titel: ${formState.title}
+                Ondertitel: ${formState.subtitle}
+                Content: ${formState.content}
+                Auteur: ${formState.author}
+                Datum: ${currentDate}
+                Leestijd: ${readTime} minuten
+                Comments: 0
+                Shares: 0
+                `)
+    }
+
+    return (
+        <>
+            {!newPostId && (
+            <form onSubmit={handleSubmit}>
+                <h1>Post toevoegen</h1>
+                {alertMessage && <Alert message={alertMessage}/>}
+                <Input
+                    labelName={"Titel"}
+                    name={"title"}
+                    value={formState.title}
+                    onChange={handleChange}
+                />
+                <Input
+                    labelName={"Ondertitel"}
+                    name={"subtitle"}
+                    value={formState.subtitle}
+                    onChange={handleChange}
+                />
+                <Input
+                    labelName={"Voor- en achternaam"}
+                    name={"author"}
+                    defaultValue={0}
+                    value={formState.author}
+                    onChange={handleChange}
+                />
+                <label className="textarea-label" htmlFor="textarea"> Blogpost
+                    <textarea
+                        name="content"
+                        cols="20" rows="7"
+                        value={formState.content}
+                        onChange={handleChange}
+                    ></textarea>
+                </label>
+                <button type="submit">
+                    Toevoegen
+                </button>
+            </form>
+            )}
+            {newPostId && (
+                    <>
+                        <p>Blogpost toegevoegd!</p>
+                        <button
+                            type="button"
+                            onClick={() => navigate(`/posts/${newPostId}`)}
+                        >Post bekijken
+                        </button>
+                    </>
+            )}
+        </>
+)
+}
+
+
+
+export default NewPost;
+
+
+

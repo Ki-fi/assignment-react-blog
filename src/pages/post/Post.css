@@ -1,0 +1,23 @@
+
+.post-container {
+    background-color: white;
+}
+
+.post {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    margin: 64px;
+    color: rgb(44,47,57);
+}
+
+.post-statistics {
+    display: flex;
+    gap: 12px;
+}
+
+.navigation, .navigation a {
+    padding: 24px 0;
+    color: var(--color-primary);
+    font-weight: bold;
+}

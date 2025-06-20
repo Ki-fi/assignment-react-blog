@@ -1,7 +1,7 @@
 /*In dit bestand plaats je alle algemene styling die geldt voor de gehele applicatie*/
 
 :root {
-  --color-primary: #38E991;
+  --color-primary: #44e492;
   --color-secondary: #2C2F39;
   --color-tertiary: #50535C;
   --color-white: #FFFFFF;
@@ -22,6 +22,7 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   -webkit-text-size-adjust: 100%;
+  background-color: #eaedef;
 }
 
 button, input, select, textarea {
@@ -38,6 +39,7 @@ h1 {
   font-size: 3.2em;
   line-height: 1.1;
   margin-block: 0.67em;
+  color: rgb(44,47,57);
 }
 
 h2 {

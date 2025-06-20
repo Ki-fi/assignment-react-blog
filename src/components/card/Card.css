@@ -1,0 +1,25 @@
+.card {
+    display: flex;
+    flex-direction: column;
+    background-color: white;
+    border: 1px solid lightgrey;
+    border-radius: 4px;
+    color: black;
+    padding: 16px;
+}
+
+.card-title {
+    color: var(--color-primary);
+    font-weight: bold;
+}
+
+.card-content {
+    display: flex;
+    align-items: baseline;
+    gap: 16px;
+}
+
+.card div {
+    display: flex;
+    gap: 8px;
+}

@@ -1,0 +1,32 @@
+
+.navbar {
+    background: rgb(44,47,57);
+    display: flex;
+    justify-content: space-between;
+    padding: 24px;
+    width: 100%;
+}
+
+.navbar img {
+    height: 42px;
+}
+
+.navbar li{
+    list-style-type: none;
+    display: inline-block;
+    padding: 16px;
+}
+
+.active-link {
+    color: var(--color-primary);
+    border-bottom: 1px solid var(--color-primary);
+}
+
+.default-link {
+    color: white;
+    border-bottom: 1px solid transparent;
+}
+
+a {
+    text-decoration: none;
+}
